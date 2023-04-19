@@ -4,6 +4,7 @@ Implementes a simple GUI for easy use by less technical staff members.
 Author: Joshua Wenger - EB Risk Control Specialist - joshua.wenger@cna.com
 
 ______________________________________________________________________
+|____________________________________________________________________|
 |                                                                    |
 |                                                                    |
 |              Choose the SOV-based matching template:               |
@@ -28,6 +29,5 @@ ______________________________________________________________________
 |                   |                            |                   |
 |                   |       Reconcile Data       |                   |
 |                   |____________________________|                   |
-|                                                                    |
 |                                                                    |
 |____________________________________________________________________|
