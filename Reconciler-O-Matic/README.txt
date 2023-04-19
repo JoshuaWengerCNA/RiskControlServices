@@ -3,7 +3,7 @@ Takes .xlsx SOV and JOL Location Report as input and generates a .xlsx with reco
 Implementes a simple GUI for easy use by less technical staff members.
 Author: Joshua Wenger - EB Risk Control Specialist - joshua.wenger@cna.com
 
-______________________________________________________________________
+ ____________________________________________________________________ 
 |____________________________________________________________________|
 |                                                                    |
 |                                                                    |
