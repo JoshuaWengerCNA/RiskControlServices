@@ -22,15 +22,16 @@ def getFile(title,dir='',extParams=['any']):
         initialdir=dirString,
         filetypes=extList
     )
+    print(selection)
     return selection
 
 # fileExtenions() takes a list of extensions and returns a list of filetypes strings
 def fileExtensions(ext):
     # Dictionary of file type strings keyed by extension abbreviation
     extDict={
-        'xlsx': ('Excel file', '.xls, .xlsx'),
+        'xlsx': ('Excel file', '.xls .xlsx'),
         'txt': ('text files', '.txt'),
-        'any': ('All files', '*.*')
+        'any': ('All files', '*')
     }
     feList=[]
     # If single filetype, returns single string

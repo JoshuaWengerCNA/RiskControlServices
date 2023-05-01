@@ -10,7 +10,7 @@ import pandas as pd
 import os
 from tkinter import *
 from getFile import getFile, getOutputDir
-from normalize import getNormalData
+from normalize import getNormalData, fixLocDetailHeaders
 from compareData import reconcileData
 from stat import S_IREAD, S_IRGRP, S_IROTH # Can be used to set read only
 
@@ -23,13 +23,25 @@ def grabSheet(sheetName):
     if sheetName == 'policy':
         policyDocPath = getFile('Open Policy File', 'Downloads', 'xlsx')
         polPath.config(text = os.path.split(policyDocPath)[1], bg='grey')
-        policyDF = pd.read_excel(policyDocPath, sheet_name='Locations')
+        policyDF = pd.read_excel(policyDocPath, sheet_name=0)
         polStats.config(text = 'Policy data contains ' + f"{len(policyDF):,}" + ' line items.')
     elif sheetName == 'jo':
         joDocPath = getFile('Open JOL Data File', 'Downloads', 'xlsx')
         joPath.config(text = os.path.split(joDocPath)[1], bg='grey')
-        joDF = pd.read_excel(joDocPath)
+        print(joDocPath)
+        joDF = pd.read_excel(joDocPath, header=None)
+        while(pd.isna(joDF.loc[0,1])): # Delete top row if top row is not headers
+            joDF = joDF.drop([0]).reset_index(drop=True)
+        joDF.columns=joDF.iloc[0]
+        joDF = joDF.drop([0]).reset_index(drop=True)
         joStats.config(text = 'Policy data contains ' + f"{len(joDF):,}" + ' line items.')
+        if('LocationID' in joDF.columns):
+            joDF.rename(columns={'LocationID':'Location ID'}, inplace=True)
+            print(joDF.columns)
+            return fixLocDetailHeaders(joDF)
+        else:
+            return joDF
+        
 
 def compareData():
     # Set output file name
@@ -41,8 +53,8 @@ def compareData():
     normalRemoveDF = getNormalData(joDF)
 
     # Reconcile the SOV data with the JO data
-    reconAddDF = reconcileData(normalAddDF, normalRemoveDF)
-    reconRemoveDF = reconcileData(normalRemoveDF, normalAddDF)
+    reconAddDF = reconcileData('add',normalAddDF,normalRemoveDF)
+    reconRemoveDF = reconcileData('remove',normalRemoveDF,normalAddDF)
 
     # # Get some stats
     addCoverageCount = len(reconAddDF)

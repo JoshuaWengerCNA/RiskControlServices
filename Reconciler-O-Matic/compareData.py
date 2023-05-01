@@ -2,9 +2,14 @@ import pandas as pd
 from normalize import getLocList
 # from normalize import getNormalData
 
-def reconcileData(df1, df2):
-    locations = getLocList(df2)
-    dataFrame = df1[~df1['Location ID'].isin(locations)]
+def reconcileData(action, df1, df2):
+    dataFrame = df1
+    dataFrame.drop_duplicates(subset=['Location ID'],inplace = True)
+    dataFrame.reset_index(drop=True)
+    dataFrame = dataFrame[~dataFrame['Location ID'].isin(df2['Location ID'])]
+    # dataFrame = dataFrame
+    if(action == 'add'):
+        dataFrame = dataFrame[dataFrame['Object Count'] > 0]
     return dataFrame
 
 # TESTS:
